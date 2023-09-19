@@ -43,7 +43,10 @@ class TestdemoQA:
     @allure.story('Находим блок Elements и нажимаем на него')
     @allure.severity('critical')
     def test_find_elements(self):
-        self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div[1]/div/div[2]').click()
+        wait = WebDriverWait(self.driver, 10)
+        elements = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[2]/div/div['
+                                                                        '1]/div/div[2]')))
+        elements.click()
 
     @allure.feature('Find Text box')
     @allure.story('Находим кнопку Text box и нажимаем на неё')
@@ -143,8 +146,9 @@ class TestdemoQA:
     @allure.story('Нажимаем на кнопку Browser windows')
     @allure.severity('critical')
     def test_browser_windows_button(self):
-        browser_windows = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div['
-                                                             '1]/div/div/div[3]/div/ul/li[1]/span')
+        wait = WebDriverWait(self.driver, 10)
+        browser_windows = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[2]/div['
+                                                                               '1]/div/div/div[3]/div/ul/li[1]/span')))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", browser_windows)
         browser_windows.click()
 
@@ -202,7 +206,7 @@ class TestdemoQA:
     def test_time_alert(self):
         self.driver.find_element(By.ID, 'timerAlertButton').click()
 
-    @allure.feature('Close simple alert')
+    @allure.feature('Close time alert')
     @allure.story('Дожидаемся и закрываем уведомление')
     @allure.severity('major')
     def test_close_time_alert(self):
@@ -229,7 +233,7 @@ class TestdemoQA:
     def test_check_confirm_alert(self):
         wait = WebDriverWait(self.driver, 10)
         confirm_elem = wait.until(EC.presence_of_element_located((By.ID, "confirmResult")))
-        assert 'You selected Ok' in confirm_elem.text
+        assert f'You selected Ok' in confirm_elem.text
 
     @allure.feature('Prompt alert')
     @allure.story('Нажимаем на кнопку, вызывающую четвёртый alert')
@@ -251,7 +255,7 @@ class TestdemoQA:
     def test_check_prompt_alert(self):
         wait = WebDriverWait(self.driver, 10)
         prompt_elem = wait.until(EC.presence_of_element_located((By.ID, "promptResult")))
-        assert 'You entered ', Test_name in prompt_elem.text
+        assert f'You entered {Test_name}' in prompt_elem.text
 
 
 if __name__ == '__main__':
